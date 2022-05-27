@@ -1,86 +1,81 @@
-from telegram import *
-from telegram.ext import *
-from requests import *
-import os
-PORT = int(os.environ.get('PORT', 5000))
+import telegram
+from telegram.ext import Updater, MessageHandler, Filters
+from telegram.ext import CommandHandler
+from dictionary import get_info
 
-TOKEN = '5247703195:AAFhyLY4RD-_a6_xdaWRI3_t_ixMl4LWmp4'
+telegram_bot_token = 
 
-updater = Updater(TOKEN)
+updater = Updater(token=telegram_bot_token, use_context=True)
 dispatcher = updater.dispatcher
 
-ourbookstext = "كتبنا"
-ourarticlestext = "مقالاتنا"
 
-books = ["المغني في ابواب التوحيد والعدل","تفسير الكشاف","المعتمد","شرح الأصول الخمسة","رسالة إبليس إلى أخوانه المناحيس"]
+# set up the introductory statement for the bot when the /start command is invoked
+def start(update, context):
+    chat_id = update.effective_chat.id
+    context.bot.send_message(chat_id=chat_id, text="Hello there. Provide any English word and I will give you a bunch "
+                                                   "of information about it.")
 
-book1 = ["رؤية الباري","الفرق غير الإسلامية","التعديل والتجوير","الإرادة","خلق القرآن","المخلوق","التوليد","التكليف","النظر والمعارف","اللطف","الأصلح","التنبؤات و المعجزات","إعجاز القرآن","الشرعيات","في الإمامة"]
-def startCommand(update: Update, context: CallbackContext):
-    buttons = [[KeyboardButton(ourbookstext)], [KeyboardButton(ourarticlestext)]]
-    context.bot.send_message(chat_id=update.effective_chat.id, text="Welcome to the bot!", reply_markup=ReplyKeyboardMarkup(buttons))
 
-def messageHandler(update: Update, context: CallbackContext):
-    if ourbookstext in update.message.text:
-        buttons = [[KeyboardButton(books[0])],
-                   [KeyboardButton(books[1])],
-                   [KeyboardButton(books[2])],
-                   [KeyboardButton(books[3])],
-                   [KeyboardButton(books[4])],
-        ]
-        context.bot.send_message(chat_id=update.effective_chat.id, text="Welcome to the bot!", reply_markup=ReplyKeyboardMarkup(buttons))
-    if books[0] == update.message.text:
-        buttons = [[KeyboardButton(book1[0]),KeyboardButton(book1[1]),KeyboardButton(book1[2])],
-                   [KeyboardButton(book1[3]),KeyboardButton(book1[4]),KeyboardButton(book1[5])],
-                   [KeyboardButton(book1[6]),KeyboardButton(book1[7]),KeyboardButton(book1[8])],
-                   [KeyboardButton(book1[9]),KeyboardButton(book1[10]),KeyboardButton(book1[11])],
-                   [KeyboardButton(book1[12]),KeyboardButton(book1[13]),KeyboardButton(book1[14])],
-        ]
-        context.bot.send_message(chat_id=update.effective_chat.id, text="Welcome to the bot!", reply_markup=ReplyKeyboardMarkup(buttons))
-    if book1[0] == update.message.text:
-        context.bot.forward_message(chat_id='5382369552', from_chat_id='-1001724830195', message_id='35')
-    if book1[1] == update.message.text:
-        context.bot.forward_message(chat_id='5382369552', from_chat_id='-1001724830195', message_id='36')
-    if book1[2] == update.message.text:
-        context.bot.forward_message(chat_id='5382369552', from_chat_id='-1001724830195', message_id='37')
-    if book1[3] == update.message.text:
-        context.bot.forward_message(chat_id='5382369552', from_chat_id='-1001724830195', message_id='38')
-    if book1[4] == update.message.text:
-        context.bot.forward_message(chat_id='5382369552', from_chat_id='-1001724830195', message_id='39')
-    if book1[5] == update.message.text:
-        context.bot.forward_message(chat_id='5382369552', from_chat_id='-1001724830195', message_id='40')
-    if book1[6] == update.message.text:
-        context.bot.forward_message(chat_id='5382369552', from_chat_id='-1001724830195', message_id='41')
-    if book1[7] == update.message.text:
-        context.bot.forward_message(chat_id='5382369552', from_chat_id='-1001724830195', message_id='42')
-    if book1[8] == update.message.text:
-        context.bot.forward_message(chat_id='5382369552', from_chat_id='-1001724830195', message_id='43')
-    if book1[9] == update.message.text:
-        context.bot.forward_message(chat_id='5382369552', from_chat_id='-1001724830195', message_id='44')
-    if book1[10] == update.message.text:
-        context.bot.forward_message(chat_id='5382369552', from_chat_id='-1001724830195', message_id='45')
-    if book1[11] == update.message.text:
-        context.bot.forward_message(chat_id='5382369552', from_chat_id='-1001724830195', message_id='46')
-    if book1[12] == update.message.text:
-        context.bot.forward_message(chat_id='5382369552', from_chat_id='-1001724830195', message_id='47')
-    if book1[13] == update.message.text:
-        context.bot.forward_message(chat_id='5382369552', from_chat_id='-1001724830195', message_id='48')
-    if book1[14] == update.message.text:
-        context.bot.forward_message(chat_id='5382369552', from_chat_id='-1001724830195', message_id='49')
-        context.bot.forward_message(chat_id='5382369552', from_chat_id='-1001724830195', message_id='50')
-    if books[1] == update.message.text:
-        context.bot.forward_message(chat_id='5382369552', from_chat_id='-1001724830195', message_id='51')
-    if books[2] == update.message.text:
-        context.bot.forward_message(chat_id='5382369552', from_chat_id='-1001724830195', message_id='52')
-        context.bot.forward_message(chat_id='5382369552', from_chat_id='-1001724830195', message_id='53')
-    if books[3] == update.message.text:
-        context.bot.forward_message(chat_id='5382369552', from_chat_id='-1001724830195', message_id='56')
-        context.bot.forward_message(chat_id='5382369552', from_chat_id='-1001724830195', message_id='57')
-    if books[4] == update.message.text:
-        context.bot.forward_message(chat_id='5382369552', from_chat_id='-1001724830195', message_id='55')
-dispatcher.add_handler(CommandHandler("start", startCommand))
-dispatcher.add_handler(MessageHandler(Filters.text, messageHandler))
+# obtain the information of the word provided and format before presenting.
+def get_word_info(update, context):
+    # get the word info
+    word_info = get_info(update.message.text)
 
-updater.start_webhook(listen="0.0.0.0",
-                          port=int(PORT),
-                          url_path=TOKEN)
-updater.bot.setWebhook('https://oawlahetest.herokuapp.com/' + TOKEN)
+    # If the user provides an invalid English word, return the custom response from get_info() and exit the function
+    if word_info.__class__ is str:
+        update.message.reply_text(word_info)
+        return
+
+    # get the word the user provided
+    word = word_info['word']
+
+    # get the origin of the word
+    origin = word_info['origin']
+    meanings = '\n'
+
+    synonyms = ''
+    definition = ''
+    example = ''
+    antonyms = ''
+
+    # a word may have several meanings. We'll use this counter to track each of the meanings provided from the response
+    meaning_counter = 1
+
+    for word_meaning in word_info['meanings']:
+        meanings += 'Meaning ' + str(meaning_counter) + ':\n'
+
+        for word_definition in word_meaning['definitions']:
+            # extract the each of the definitions of the word
+            definition = word_definition['definition']
+
+            # extract each example for the respective definition
+            if 'example' in word_definition:
+                example = word_definition['example']
+
+            # extract the collection of synonyms for the word based on the definition
+            for word_synonym in word_definition['synonyms']:
+                synonyms += word_synonym + ', '
+
+            # extract the antonyms of the word based on the definition
+            for word_antonym in word_definition['antonyms']:
+                antonyms += word_antonym + ', '
+
+        meanings += 'Definition: ' + definition + '\n\n'
+        meanings += 'Example: ' + example + '\n\n'
+        meanings += 'Synonym: ' + synonyms + '\n\n'
+        meanings += 'Antonym: ' + antonyms + '\n\n\n'
+
+        meaning_counter += 1
+
+    # format the data into a string
+    message = f"Word: {word}\n\nOrigin: {origin}\n{meanings}"
+
+    update.message.reply_text(message)
+
+# run the start function when the user invokes the /start command 
+dispatcher.add_handler(CommandHandler("start", start))
+
+# invoke the get_word_info function when the user sends a message 
+# that is not a command.
+dispatcher.add_handler(MessageHandler(Filters.text, get_word_info))
+updater.start_polling()
